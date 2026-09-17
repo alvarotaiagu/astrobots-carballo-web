@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alvarotaiagu.github.io/astrobots-carballo-web/sitemap.xml

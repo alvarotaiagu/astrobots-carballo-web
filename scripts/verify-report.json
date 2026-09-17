@@ -1,0 +1,218 @@
+{
+  "fecha": "2026-09-17T15:55:37.633Z",
+  "base": "http://127.0.0.1:8977/",
+  "resultados": [
+    {
+      "prueba": "sin errores de consola",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "title, description, canonical y lang",
+      "ok": true,
+      "detalle": {
+        "title": "Astrobots · Robótica y Nuevas Tecnologías en Carballo",
+        "desc": "Academia de nuevas tecnologías en Carballo. Extraescolares de robótica por niveles, informática, Minecraft Education, impresión 3D, gaming y dibujo desde los 4 años. Curso 2026-2027 en marcha.",
+        "canonical": "https://alvarotaiagu.github.io/astrobots-carballo-web/",
+        "lang": "es",
+        "h1": 1
+      }
+    },
+    {
+      "prueba": "JSON-LD válido con LocalBusiness y >= 8 Course",
+      "ok": true,
+      "detalle": {
+        "cursos": 9,
+        "tipos": 11
+      }
+    },
+    {
+      "prueba": "el robot del hero se monta entero (9 piezas en su sitio)",
+      "ok": true,
+      "detalle": {
+        "total": 9,
+        "montadas": 9,
+        "sinDesplazar": 9,
+        "antena": "#8FD32E"
+      }
+    },
+    {
+      "prueba": "la antena acaba encendida en lima",
+      "ok": true,
+      "detalle": "#8FD32E"
+    },
+    {
+      "prueba": "el rectángulo lima del titular está encajado",
+      "ok": true,
+      "detalle": {
+        "clase": true,
+        "escalaX": 1
+      }
+    },
+    {
+      "prueba": "el robot de niveles crece 4 -> 6 -> 8 piezas al recorrer la pila",
+      "ok": true,
+      "detalle": {
+        "secuencia": "4>6>8",
+        "piezas": [
+          5,
+          7,
+          9
+        ]
+      }
+    },
+    {
+      "prueba": "cada tarjeta manda al frente al menos 400 px de recorrido",
+      "ok": true,
+      "detalle": {
+        "1": 2844,
+        "2": 837,
+        "3": 718
+      }
+    },
+    {
+      "prueba": "el acordeón de actividades abre y cierra",
+      "ok": true,
+      "detalle": {
+        "abierta": {
+          "clase": true,
+          "aria": "true",
+          "alto": 342.53125
+        },
+        "cerrada": {
+          "clase": false,
+          "alto": 0
+        }
+      }
+    },
+    {
+      "prueba": "las 14 actividades están en la rejilla",
+      "ok": true,
+      "detalle": 14
+    },
+    {
+      "prueba": "el mapa no existe hasta que se pide, y luego es un embed sin API key",
+      "ok": true,
+      "detalle": {
+        "antes": 0,
+        "src": "https://www.google.com/maps?q=Astrobots%20C%2F%20Per%C3%BA%2030-32%20Carballo%20A%20Coru%C3%B1a&output=embed"
+      }
+    },
+    {
+      "prueba": "el formulario valida y avisa de que aún no tiene destino",
+      "ok": true,
+      "detalle": {
+        "vacio": "Faltan datos obligatorios.",
+        "lleno": "Formulario correcto, pero todavía no tiene destino configura"
+      }
+    },
+    {
+      "prueba": "todas las imágenes cargan, con alt, y no hay ningún canvas",
+      "ok": true,
+      "detalle": {
+        "total": 10,
+        "rotas": [],
+        "sinAlt": 0,
+        "canvas": 0
+      }
+    },
+    {
+      "prueba": "hay 3 huecos marcados para fotos reales de menores",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "el aviso de cookies aparece, el botón lo cierra y queda recordado",
+      "ok": true,
+      "detalle": {
+        "visible": true,
+        "cerrado": true,
+        "ls": "1"
+      }
+    },
+    {
+      "prueba": "el aviso de cookies no reaparece tras aceptarlo",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "Novedades lee el WordPress en vivo",
+      "ok": true,
+      "detalle": {
+        "estado": "vivo",
+        "n": 4,
+        "primero": "Roberta Lab"
+      }
+    },
+    {
+      "prueba": "con el WordPress caído quedan los 4 respaldos y el fallo es silencioso",
+      "ok": true,
+      "detalle": {
+        "respaldo": {
+          "estado": "respaldo",
+          "n": 4,
+          "textos": [
+            "Iniciación a Open Roberta Lab",
+            "Aprende a crear un juego con mBlock",
+            "Aprende a crear una animación con mBlock",
+            "Cursos: BabyBots, iBots y ProBots"
+          ]
+        },
+        "excepciones": [],
+        "avisoEnPantalla": false
+      }
+    },
+    {
+      "prueba": "con movimiento reducido el robot ya está montado y nada queda invisible",
+      "ok": true,
+      "detalle": {
+        "visibles": 9,
+        "total": 9,
+        "encajeX": 1,
+        "tarjetas": 0
+      }
+    },
+    {
+      "prueba": "con movimiento reducido el contador de niveles sigue actualizándose",
+      "ok": true,
+      "detalle": "8"
+    },
+    {
+      "prueba": "a 400 px no hay scroll horizontal, el robot se reduce y las actividades van en una columna",
+      "ok": true,
+      "detalle": {
+        "scrollH": 400,
+        "ancho": 400,
+        "desbordan": [],
+        "robot": 240,
+        "actCols": 1
+      }
+    },
+    {
+      "prueba": "el menú móvil abre y cierra",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin errores de consola en móvil",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "ninguna tarea larga pasa de 200 ms al cargar",
+      "ok": true,
+      "detalle": {
+        "tareas": [
+          196,
+          67
+        ],
+        "peor": 196
+      }
+    },
+    {
+      "prueba": "la página 404 existe y enlaza al inicio",
+      "ok": true,
+      "detalle": null
+    }
+  ]
+}

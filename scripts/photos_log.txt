@@ -1,0 +1,13 @@
+Fotografia de archivo de Pexels, gradada al color de marca.
+Ninguna es de la academia. Ninguna muestra caras de menores.
+
+piezas-kit -> pexels.com/photo/35673074 ((8, 3))
+manos-montaje -> pexels.com/photo/9242911 ((4, 3))
+cables -> pexels.com/photo/35673084 ((4, 3))
+placa -> pexels.com/photo/15470542 ((4, 3))
+pantalla -> pexels.com/photo/34803966 ((4, 3))
+impresora-3d -> pexels.com/photo/23533982 ((4, 3))
+pieza-3d -> pexels.com/photo/13007765 ((4, 3))
+laser -> pexels.com/photo/7254419 ((4, 3))
+engranajes -> pexels.com/photo/39295511 ((4, 3))
+aula -> pexels.com/photo/8423439 ((8, 3))

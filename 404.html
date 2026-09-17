@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falta una pieza · Astrobots</title>
+<meta name="robots" content="noindex, follow">
+<meta name="color-scheme" content="light only">
+<link rel="icon" href="assets/img/brand/astro-marca.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --lima:#8FD32E; --noche:#0F172A; --gris:#EEF1F5; --suave:#55627A; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; min-height:100svh; display:grid; place-content:center; text-align:center;
+    gap:1.2rem; padding:2rem;
+    font-family:'Rubik',system-ui,sans-serif; color:var(--noche); background:#fff;
+    background-image:radial-gradient(circle,#C8D2DE 1.7px,transparent 1.8px);
+    background-size:26px 26px;
+  }
+  .mono { font-family:'JetBrains Mono',monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.76rem; color:var(--suave); margin:0; }
+  h1 { font-size:clamp(2.2rem,7vw,4rem); font-weight:900; letter-spacing:-.035em; line-height:.98; margin:0; }
+  .slab { position:relative; display:inline-block; padding:0 .16em; z-index:0; }
+  .slab::before { content:""; position:absolute; inset:.08em -.02em .1em; background:var(--lima); border-radius:6px; z-index:-1; }
+  p.txt { color:var(--suave); max-width:46ch; margin:0 auto; }
+  svg { width:150px; height:150px; margin-inline:auto; }
+  .suelta { animation: caer 2.6s ease-in-out infinite; transform-origin:50% 50%; }
+  @keyframes caer { 0%,100% { transform:translateY(0) rotate(-6deg);} 50% { transform:translateY(-10px) rotate(6deg);} }
+  .btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--lima); color:var(--noche); text-decoration:none; font-weight:700;
+    border:2px solid var(--noche); border-radius:999px; padding:.85rem 1.6rem;
+    box-shadow:0 5px 0 0 var(--noche);
+  }
+  .btn:active { transform:translateY(4px); box-shadow:0 1px 0 0 var(--noche); }
+  @media (prefers-reduced-motion: reduce) { .suelta { animation:none; } }
+</style>
+</head>
+<body>
+  <svg viewBox="0 0 200 200" aria-hidden="true">
+    <rect x="46" y="58" width="108" height="76" rx="18" fill="#fff" stroke="#0F172A" stroke-width="6"/>
+    <rect x="62" y="74" width="76" height="40" rx="9" fill="#0F172A"/>
+    <circle cx="82" cy="94" r="8" fill="#fff"/><circle cx="118" cy="94" r="8" fill="#fff"/>
+    <circle cx="82" cy="94" r="3.4" fill="#8FD32E"/><circle cx="118" cy="94" r="3.4" fill="#8FD32E"/>
+    <circle cx="72" cy="158" r="22" fill="#fff" stroke="#0F172A" stroke-width="6"/>
+    <circle cx="72" cy="158" r="8" fill="#8FD32E" stroke="#0F172A" stroke-width="4"/>
+    <g class="suelta"><circle cx="150" cy="166" r="22" fill="#fff" stroke="#0F172A" stroke-width="6" stroke-dasharray="6 7"/></g>
+    <path d="M100 58V30" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="100" cy="24" r="8" fill="#FF8A3D" stroke="#0F172A" stroke-width="5"/>
+  </svg>
+  <p class="mono">Error 404</p>
+  <h1>Falta <span class="slab">una pieza</span></h1>
+  <p class="txt">Esta página no existe o ha cambiado de sitio. Vuelve al montaje completo y busca lo que necesitas desde el principio.</p>
+  <p><a class="btn" href="./">Volver al inicio</a></p>
+  <p class="mono">Astrobots · C/ Perú 30-32 · Carballo · 605 02 60 16</p>
+</body>
+</html>
