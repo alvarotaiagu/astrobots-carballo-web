@@ -200,6 +200,49 @@ a { color: inherit; }
 .btn--cabecera { padding: 0.62rem 1.15rem; font-size: 0.88rem; box-shadow: 0 4px 0 0 var(--noche); }
 .taller .btn--linea, .empleo .btn--linea { color: var(--blanco); border-color: var(--blanco); }
 
+/* ---------- Cortina de entrada (preloader) ----------
+   Pantalla de arranque: el led parpadea, el nombre sube desde una máscara,
+   la barra lima se llena y luego el panel se abre en CINCO columnas que
+   suben escalonadas, como un kit que se despieza.
+   A propósito no monta piezas: eso ya lo hace el robot del hero y repetirlo
+   restaría.
+   Los estados "vacíos" viven bajo html.js-motion: sin GSAP la cortina se
+   retira al instante y nadie ve un panel a medias.
+   Ojo: .cortina usa display:grid, así que [hidden] necesita su regla. */
+.cortina { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center; }
+.cortina[hidden] { display: none; }
+html.cortina-puesta { overflow: hidden; }
+
+.cortina-col {
+  position: absolute; top: -1px; bottom: -1px; width: calc(20% + 1px);
+  background: linear-gradient(180deg, var(--noche-2) 0%, var(--noche) 60%);
+  transform-origin: 50% 100%;
+}
+.cortina-col:nth-child(1) { left: 0; }
+.cortina-col:nth-child(2) { left: 20%; }
+.cortina-col:nth-child(3) { left: 40%; }
+.cortina-col:nth-child(4) { left: 60%; }
+.cortina-col:nth-child(5) { left: 80%; }
+
+.cortina-centro { position: relative; display: grid; justify-items: center; gap: .9rem; padding: 0 1.5rem; text-align: center; }
+.cortina-led { width: 10px; height: 10px; border-radius: 50%; background: var(--lima); box-shadow: 0 0 18px 2px rgba(143,211,46,.55); }
+.cortina-marca { overflow: hidden; padding-bottom: .08em; }
+.cortina-marca span {
+  display: block; font-family: var(--fuente); font-weight: 700;
+  font-size: clamp(2.4rem, 8vw, 4.2rem); line-height: 1; letter-spacing: -0.02em; color: var(--blanco);
+}
+.cortina-barra { display: block; width: min(52vw, 320px); height: 3px; border-radius: 999px; background: rgba(255,255,255,.14); overflow: hidden; }
+.cortina-barra i { display: block; width: 100%; height: 100%; border-radius: 999px; background: var(--lima); transform-origin: 0% 50%; }
+.cortina-pie { font-family: var(--mono); font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+
+html.js-motion .cortina-led { opacity: 0; }
+html.js-motion .cortina-marca span { transform: translateY(112%); }
+html.js-motion .cortina-barra i { transform: scaleX(0); }
+html.js-motion .cortina-pie { opacity: 0; }
+
+/* con movimiento reducido no debe verse ni un fotograma */
+@media (prefers-reduced-motion: reduce) { .cortina { display: none; } }
+
 /* ---------- Cabecera ---------- */
 .cabecera {
   position: fixed; inset: 0 0 auto 0; z-index: 90;

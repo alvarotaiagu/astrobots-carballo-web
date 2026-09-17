@@ -1,6 +1,6 @@
 {
-  "fecha": "2026-09-17T16:21:11.093Z",
-  "base": "http://127.0.0.1:8977/",
+  "fecha": "2026-09-17T21:47:24.120Z",
+  "base": "http://127.0.0.1:8803/",
   "resultados": [
     {
       "prueba": "sin errores de consola",
@@ -95,9 +95,9 @@
       "prueba": "cada tarjeta manda al frente al menos 400 px de recorrido",
       "ok": true,
       "detalle": {
-        "1": 764,
-        "2": 1949,
-        "3": 689
+        "1": 882,
+        "2": 857,
+        "3": 839
       }
     },
     {
@@ -261,10 +261,11 @@
       "ok": true,
       "detalle": {
         "tareas": [
-          175,
-          82
+          183,
+          56,
+          59
         ],
-        "peor": 175,
+        "peor": 183,
         "baseSinMainJs": "166-184 ms"
       }
     },

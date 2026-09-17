@@ -211,6 +211,79 @@
     'pantalla':  { x: 360,  y: -200, r: 14 },
     'antena':    { x: 0,    y: -420, r: 0 }
   };
+
+  /* ---------------------------------------------------------
+     Cortina de entrada (preloader)
+     ---------------------------------------------------------
+     Gesto propio: pantalla de arranque. El led se enciende, el nombre sube
+     desde una máscara, la barra lima se llena y el panel se abre en CINCO
+     columnas que suben escalonadas. No monta piezas a propósito: eso ya lo
+     hace el robot del hero.
+
+     Dos momentos distintos:
+       · alAbrirse(fn) → cuando las columnas EMPIEZAN a subir, para que el
+         robot ya se esté montando cuando asoma por los huecos.
+       · retirar()     → al terminar: quita el nodo, devuelve el scroll y
+         refresca ScrollTrigger, que midió con overflow:hidden.
+     Se retira SIEMPRE (sin GSAP, con reduced-motion o por el timeout de
+     seguridad): una cortina atascada tapa el sitio entero.
+     --------------------------------------------------------- */
+  var cortina = (function initCortina() {
+    var el = $('[data-cortina]');
+    var espera = [];
+    var abierta = false;
+    var fuera = false;
+
+    function abrir() {
+      if (abierta) return;
+      abierta = true;
+      espera.splice(0).forEach(function (fn) { try { fn(); } catch (e) {} });
+    }
+    function retirar() {
+      abrir();
+      if (fuera) return;
+      fuera = true;
+      if (el) el.hidden = true;
+      document.documentElement.classList.remove('cortina-puesta');
+      if (lenis) lenis.start();
+      if (tieneST) window.ScrollTrigger.refresh();
+    }
+
+    var api = { alAbrirse: function (fn) { return abierta ? fn() : espera.push(fn); } };
+    if (!el || !movimiento) { retirar(); return api; }
+
+    document.documentElement.classList.add('cortina-puesta');
+    if (lenis) lenis.stop();
+
+    var centro = $('.cortina-centro', el);
+    var led = $('.cortina-led', el);
+    var marca = $('.cortina-marca span', el);
+    var barra = $('.cortina-barra i', el);
+    var pie = $('.cortina-pie', el);
+    var cols = $$('.cortina-col', el);
+    var ABRE = 1.35;
+
+    var tl = window.gsap.timeline({ onComplete: retirar });
+    if (led) {
+      tl.to(led, { opacity: 1, duration: 0.14, ease: 'none' }, 0)
+        .to(led, { opacity: 0.25, duration: 0.16, ease: 'none' }, 0.2)
+        .to(led, { opacity: 1, duration: 0.16, ease: 'none' }, 0.38);
+    }
+    /* el estado inicial es un translateY(112%) de CSS y GSAP lo lee del
+       matrix como p\u00edxeles, no como yPercent: hay que poner las dos a cero
+       o el nombre no sale nunca de su m\u00e1scara. */
+    if (marca) tl.to(marca, { y: 0, yPercent: 0, duration: 0.85, ease: 'expo.out' }, 0.32);
+    if (barra) tl.to(barra, { scaleX: 1, duration: 0.95, ease: 'power2.inOut' }, 0.5);
+    if (pie) tl.to(pie, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0.6);
+
+    tl.add(abrir, ABRE);
+    if (centro) tl.to(centro, { opacity: 0, y: -14, duration: 0.4, ease: 'power2.in' }, ABRE);
+    if (cols.length) tl.to(cols, { yPercent: -101, duration: 0.95, stagger: 0.07, ease: 'expo.inOut' }, ABRE + 0.12);
+
+    setTimeout(retirar, 5200);
+    return api;
+  })();
+
   var ORDEN = ['cuerpo', 'rueda-izq', 'rueda-der', 'cuello', 'cabeza', 'brazos', 'sensor', 'pantalla', 'antena'];
 
   function montarHero() {
@@ -225,7 +298,10 @@
       return;
     }
 
-    var tl = window.gsap.timeline({ delay: 0.25 });
+    var tl = window.gsap.timeline({ delay: 0.25, paused: true });
+    /* el robot no empieza a montarse hasta que suben las columnas: lo
+       primero que se ve por el hueco ya está en movimiento */
+    cortina.alAbrirse(function () { tl.play(); });
     piezas.forEach(function (p, i) {
       var o = ORIGENES[p.getAttribute('data-pieza')] || { x: 0, y: 200, r: 0 };
       tl.fromTo(p,
