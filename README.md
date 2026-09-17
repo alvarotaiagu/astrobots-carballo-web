@@ -24,6 +24,11 @@ el robot crece con el niño:
 - En el **sticky-stack de niveles el mismo robot gana piezas**: BabyBots
   (cuerpo + ruedas, 4) → iBots (+ brazos + sensor, 6) → ProBots (+ antena +
   pantalla, 8).
+- El progreso de lectura es una **regleta de montaje** bajo la cabecera: un
+  tramo por sección, **de ancho proporcional a lo que cuesta recorrerla**, que
+  se rellena de lima y hace «clac» al completarse. Al lado, el contador
+  `04/13`. Es un `role="progressbar"` de verdad y sigue funcionando con
+  movimiento reducido (sin el «clac»).
 
 ## Marca
 
@@ -74,6 +79,9 @@ menores hace falta confirmación por escrito de que existen los consentimientos.
   cuatro de respaldo van pintadas en el HTML y el fallo es silencioso.
 - **Movimiento reducido**: el robot aparece ya montado y nada queda invisible,
   pero el contenido (nivel activo, contador de piezas) sigue cambiando.
+- **Progreso**: se recalcula solo con un `ResizeObserver` sobre `body`, así que
+  abrir un acordeón o cargar una imagen no lo descuadra. El pintado va en
+  `requestAnimationFrame`.
 - Sin canvas, sin partículas, sin 3D.
 - Responsive hasta 400 px: el robot se reduce y las actividades pasan a acordeón
   en una columna.
@@ -87,7 +95,7 @@ menores hace falta confirmación por escrito de que existen los consentimientos.
 # servidor local
 python -m http.server 8977
 
-# verificación completa (25 pruebas, incluye el fallback con route.abort)
+# verificación completa (30 pruebas, incluye el fallback con route.abort)
 ASTRO_URL=http://127.0.0.1:8977/ NODE_PATH=/c/Users/alvar/node_modules node scripts/verify.js
 
 # capturas de revisión

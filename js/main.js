@@ -77,11 +77,113 @@
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarMenu(); });
 
+  /* ---------------------------------------------------------
+     Regleta de progreso: cuánto llevas montado de la página.
+     Un tramo por sección, con el ancho proporcional a lo que cuesta
+     recorrerla, así que un tramo lleno equivale de verdad a una sección
+     leída (y no a "un trozo cualquiera" del scroll).
+     --------------------------------------------------------- */
+  var progreso = (function () {
+    var barra = $('#progreso');
+    var num = $('#progresoNum');
+    if (!barra) return { medir: function () {}, pintar: function () {} };
+
+    var secciones = $$('main section[id]');
+    var total = secciones.length;
+    if (!total) return { medir: function () {}, pintar: function () {} };
+
+    var tramos = secciones.map(function () {
+      var caja = document.createElement('span');
+      caja.className = 'progreso-tramo';
+      var relleno = document.createElement('i');
+      relleno.className = 'progreso-relleno';
+      caja.appendChild(relleno);
+      barra.appendChild(caja);
+      return { caja: caja, relleno: relleno, completa: false };
+    });
+
+    var bordes = [];
+    var maximo = 1;
+    var ultimoNum = -1;
+    var ultimoPct = -1;
+
+    var arribaDoc = function (el) {
+      var t = 0;
+      var n = el;
+      while (n) { t += n.offsetTop; n = n.offsetParent; }
+      return t;
+    };
+
+    function medir() {
+      maximo = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      var cab = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cab'), 10) || 74;
+      bordes = secciones.map(function (s, i) {
+        return i === 0 ? 0 : Math.min(maximo, Math.max(0, arribaDoc(s) - cab));
+      });
+      bordes.push(maximo);
+      for (var i = 1; i < bordes.length; i++) {
+        if (bordes[i] < bordes[i - 1]) bordes[i] = bordes[i - 1];
+      }
+      tramos.forEach(function (t, j) {
+        t.caja.style.flexGrow = Math.max(0.035, (bordes[j + 1] - bordes[j]) / maximo);
+      });
+    }
+
+    function pintar() {
+      var y = window.scrollY;
+      var actual = 1;
+      tramos.forEach(function (t, i) {
+        var a = bordes[i];
+        var b = bordes[i + 1];
+        var local = b > a ? Math.min(1, Math.max(0, (y - a) / (b - a))) : (y >= b ? 1 : 0);
+        t.relleno.style.transform = 'scaleX(' + local.toFixed(4) + ')';
+        if (local > 0) actual = i + 1;
+
+        var hecho = local >= 0.999;
+        if (hecho && !t.completa) {
+          t.completa = true;
+          t.caja.classList.add('completa');
+          if (movimiento) {
+            t.caja.classList.remove('clac');
+            void t.caja.offsetWidth;          /* reinicia la animación */
+            t.caja.classList.add('clac');
+          }
+        } else if (!hecho && t.completa) {
+          t.completa = false;
+          t.caja.classList.remove('completa', 'clac');
+        }
+      });
+      if (actual !== ultimoNum) {
+        ultimoNum = actual;
+        if (num) num.innerHTML = '<b>' + (actual < 10 ? '0' : '') + actual + '</b>/' + total;
+      }
+      var pct = Math.round(Math.min(1, y / maximo) * 100);
+      if (pct !== ultimoPct) {
+        ultimoPct = pct;
+        barra.setAttribute('aria-valuenow', pct);
+      }
+    }
+
+    medir();
+    /* el alto del documento cambia al abrir un acordeón o al cargar
+       imágenes: se vuelve a medir solo */
+    if (typeof ResizeObserver !== 'undefined') {
+      var ro = new ResizeObserver(function () { medir(); pintar(); });
+      ro.observe(document.body);
+    }
+    return { medir: medir, pintar: pintar };
+  })();
+
+  var pedido = false;
   var alScroll = function () {
     if (cabecera) cabecera.classList.toggle('pegada', window.scrollY > 24);
+    if (pedido) return;
+    pedido = true;
+    requestAnimationFrame(function () { pedido = false; progreso.pintar(); });
   };
   alScroll();
   window.addEventListener('scroll', alScroll, { passive: true });
+  window.addEventListener('resize', function () { progreso.medir(); progreso.pintar(); });
 
   var enlacesNav = $$('.nav a');
   if ('IntersectionObserver' in window && enlacesNav.length) {
@@ -413,7 +515,11 @@
     novedades();
     formulario();
     if (tieneST) {
-      window.addEventListener('load', function () { window.ScrollTrigger.refresh(); });
+      window.addEventListener('load', function () {
+        window.ScrollTrigger.refresh();
+        progreso.medir();
+        progreso.pintar();
+      });
     }
   }
 

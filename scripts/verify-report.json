@@ -1,6 +1,6 @@
 {
-  "fecha": "2026-09-17T16:02:59.370Z",
-  "base": "https://alvarotaiagu.github.io/astrobots-carballo-web/",
+  "fecha": "2026-09-17T16:21:11.093Z",
+  "base": "http://127.0.0.1:8977/",
   "resultados": [
     {
       "prueba": "sin errores de consola",
@@ -50,6 +50,36 @@
       }
     },
     {
+      "prueba": "la regleta tiene un tramo por sección y arranca vacía",
+      "ok": true,
+      "detalle": {
+        "tramos": 13,
+        "valor": "0",
+        "num": "01/13"
+      }
+    },
+    {
+      "prueba": "los tramos son proporcionales a cada sección (no todos iguales)",
+      "ok": true,
+      "detalle": {
+        "anchos": [
+          70,
+          74,
+          356,
+          103,
+          95,
+          92,
+          127,
+          68,
+          61,
+          112,
+          51,
+          57,
+          73
+        ]
+      }
+    },
+    {
       "prueba": "el robot de niveles crece 4 -> 6 -> 8 piezas al recorrer la pila",
       "ok": true,
       "detalle": {
@@ -65,9 +95,27 @@
       "prueba": "cada tarjeta manda al frente al menos 400 px de recorrido",
       "ok": true,
       "detalle": {
-        "1": 846,
-        "2": 838,
-        "3": 837
+        "1": 764,
+        "2": 1949,
+        "3": 689
+      }
+    },
+    {
+      "prueba": "al llegar al final la regleta está completa y el contador marca la última sección",
+      "ok": true,
+      "detalle": {
+        "valor": 100,
+        "completos": 13,
+        "tramos": 13,
+        "num": "13/13"
+      }
+    },
+    {
+      "prueba": "la regleta se vacía al volver arriba",
+      "ok": true,
+      "detalle": {
+        "valor": 0,
+        "completos": 0
       }
     },
     {
@@ -178,6 +226,16 @@
       "detalle": "8"
     },
     {
+      "prueba": "con movimiento reducido la regleta se llena igual (sin el \"clac\")",
+      "ok": true,
+      "detalle": {
+        "valor": 100,
+        "completos": 13,
+        "tramos": 13,
+        "num": "13/13"
+      }
+    },
+    {
       "prueba": "a 400 px no hay scroll horizontal, el robot se reduce y las actividades van en una columna",
       "ok": true,
       "detalle": {
@@ -203,10 +261,10 @@
       "ok": true,
       "detalle": {
         "tareas": [
-          191,
-          76
+          175,
+          82
         ],
-        "peor": 191,
+        "peor": 175,
         "baseSinMainJs": "166-184 ms"
       }
     },

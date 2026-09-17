@@ -112,6 +112,27 @@ async function bajarA(page, y) {
   ok('el rectángulo lima del titular está encajado',
     encaje.clase && encaje.escalaX > 0.98, encaje);
 
+  /* --- Regleta de progreso --- */
+  const progIni = await page.evaluate(() => {
+    const b = document.querySelector('#progreso');
+    return {
+      tramos: b.querySelectorAll('.progreso-tramo').length,
+      secciones: document.querySelectorAll('main section[id]').length,
+      valor: b.getAttribute('aria-valuenow'),
+      num: document.querySelector('#progresoNum').textContent.trim(),
+      completos: b.querySelectorAll('.progreso-tramo.completa').length,
+      /* los anchos deben ser distintos: son proporcionales a cada sección */
+      anchos: Array.from(b.querySelectorAll('.progreso-tramo'))
+        .map((t) => Math.round(t.getBoundingClientRect().width))
+    };
+  });
+  ok('la regleta tiene un tramo por sección y arranca vacía',
+    progIni.tramos === progIni.secciones && progIni.tramos >= 12 &&
+    progIni.valor === '0' && progIni.completos === 0 && progIni.num === '01/' + progIni.secciones,
+    { tramos: progIni.tramos, valor: progIni.valor, num: progIni.num });
+  ok('los tramos son proporcionales a cada sección (no todos iguales)',
+    new Set(progIni.anchos).size > 4, { anchos: progIni.anchos });
+
   /* --- Sticky stack: el robot gana piezas ---
      En vez de adivinar coordenadas, se recorre la sección entera a pasos
      cortos y se anota la secuencia de estados. Así se comprueba el
@@ -159,6 +180,38 @@ async function bajarA(page, y) {
   });
   ok('cada tarjeta manda al frente al menos 400 px de recorrido',
     recorridos[1] >= 400 && recorridos[2] >= 400 && recorridos[3] >= 400, recorridos);
+
+  /* --- La regleta avanza y se completa al llegar al final --- */
+  await page.evaluate(() => { document.querySelector('#contacto').scrollIntoView(); });
+  for (let i = 0; i < 40; i++) { await page.mouse.wheel(0, 900); await page.waitForTimeout(60); }
+  await page.waitForTimeout(1200);
+  const progFin = await page.evaluate(() => {
+    const b = document.querySelector('#progreso');
+    return {
+      valor: parseInt(b.getAttribute('aria-valuenow'), 10),
+      completos: b.querySelectorAll('.progreso-tramo.completa').length,
+      tramos: b.querySelectorAll('.progreso-tramo').length,
+      num: document.querySelector('#progresoNum').textContent.trim()
+    };
+  });
+  ok('al llegar al final la regleta está completa y el contador marca la última sección',
+    progFin.valor >= 99 && progFin.completos === progFin.tramos &&
+    progFin.num === progFin.tramos + '/' + progFin.tramos, progFin);
+
+  /* y vuelve atrás al subir: no es un contador de un solo sentido */
+  for (let i = 0; i < 200; i++) {
+    const y = await page.evaluate(() => window.scrollY);
+    if (y < 10) break;
+    await page.mouse.wheel(0, -Math.min(2000, Math.max(400, y)));
+    await page.waitForTimeout(60);
+  }
+  await page.waitForTimeout(900);
+  const progVuelta = await page.evaluate(() => ({
+    valor: parseInt(document.querySelector('#progreso').getAttribute('aria-valuenow'), 10),
+    completos: document.querySelectorAll('.progreso-tramo.completa').length
+  }));
+  ok('la regleta se vacía al volver arriba',
+    progVuelta.valor <= 2 && progVuelta.completos === 0, progVuelta);
 
   /* --- Acordeón de actividades --- */
   await bajarHasta(page, '#actividades');
@@ -308,6 +361,18 @@ async function bajarA(page, y) {
   const rmNivel = await quieto.evaluate(() => document.querySelector('#piezasPuestas').textContent.trim());
   ok('con movimiento reducido el contador de niveles sigue actualizándose',
     rmNivel === '8', rmNivel);
+
+  /* la regleta es estado, no adorno: sin animación tiene que seguir subiendo */
+  await quieto.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await quieto.waitForTimeout(900);
+  const rmProg = await quieto.evaluate(() => ({
+    valor: parseInt(document.querySelector('#progreso').getAttribute('aria-valuenow'), 10),
+    completos: document.querySelectorAll('.progreso-tramo.completa').length,
+    tramos: document.querySelectorAll('.progreso-tramo').length,
+    num: document.querySelector('#progresoNum').textContent.trim()
+  }));
+  ok('con movimiento reducido la regleta se llena igual (sin el "clac")',
+    rmProg.valor >= 99 && rmProg.completos === rmProg.tramos, rmProg);
   await quieto.close();
 
   /* ============ 4 · Responsive 400 px ============ */
