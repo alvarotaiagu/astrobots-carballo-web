@@ -1,6 +1,6 @@
 {
-  "fecha": "2026-09-17T15:55:37.633Z",
-  "base": "http://127.0.0.1:8977/",
+  "fecha": "2026-09-17T16:02:59.370Z",
+  "base": "https://alvarotaiagu.github.io/astrobots-carballo-web/",
   "resultados": [
     {
       "prueba": "sin errores de consola",
@@ -65,9 +65,9 @@
       "prueba": "cada tarjeta manda al frente al menos 400 px de recorrido",
       "ok": true,
       "detalle": {
-        "1": 2844,
-        "2": 837,
-        "3": 718
+        "1": 846,
+        "2": 838,
+        "3": 837
       }
     },
     {
@@ -199,14 +199,15 @@
       "detalle": []
     },
     {
-      "prueba": "ninguna tarea larga pasa de 200 ms al cargar",
+      "prueba": "ninguna tarea larga se sale de la base de GSAP + fuentes (~185 ms)",
       "ok": true,
       "detalle": {
         "tareas": [
-          196,
-          67
+          191,
+          76
         ],
-        "peor": 196
+        "peor": 191,
+        "baseSinMainJs": "166-184 ms"
       }
     },
     {
